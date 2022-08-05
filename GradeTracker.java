@@ -3,8 +3,6 @@ import apple.Assessment;
 import apple.Module;
 import java.util.*;
 
-import javax.lang.model.util.ElementScanner14;
-
 public class GradeTracker {
     private static ArrayList<Student> Students = new ArrayList<>();
 
@@ -52,16 +50,25 @@ public class GradeTracker {
 
                     // delete new students..............
                     else if (sm_option == 2) {
-                        System.out.println("\nEnter the student id to delete: ");
-                        String del_id = scan.next();
-                        for (Iterator<Student> x = Students.iterator(); x.hasNext();) {
-                            Student Student = x.next();
-                            if (Student.getStudentID().equals(del_id)) {
-                                x.remove();
-                            }
-                        }
-                        System.out.println(Students);
+                        String del_std = "y";
+                        while (del_std.equals("y")) {
+                            System.out.print("\nEnter the student id to delete: ");
+                            String del_id = scan.next();
+                            for (Iterator<Student> x = Students.iterator(); x.hasNext();) {
+                                Student Student = x.next();
+                                if (Student.getStudentID().equals(del_id)) {
+                                    x.remove();
+                                    System.out.println(Students);
+                                    System.out.print("Do u want to continue to delete(y/n): ");
+                                    del_std = scan.next();
+                                    break;
+                                } else if (Students.indexOf(Student) == Students.size() - 1) {
+                                    System.out.println("Student not found!");
+                                }
 
+                            }
+
+                        }
                     }
                     // GPA....................
                     else if (sm_option == 3) {
@@ -116,7 +123,11 @@ public class GradeTracker {
                                             module_loop = scan.next();
 
                                         } while (module_loop.equals("y"));
+                                        break;
+                                    } else if (Students.indexOf(Student) == Students.size() - 1) {
+                                        System.out.println("Student not found!");
                                     }
+
                                 }
                             } else {
                                 break;
@@ -151,11 +162,19 @@ public class GradeTracker {
                                                 System.out.print(Student.getModules());
                                                 System.out.print("\nDo you want to delete more module(y/n): ");
                                                 del_module_loop = scan.next();
+                                                break;
 
+                                            } else if (Student.getModules()
+                                                    .indexOf(Module) == Student.getModules().size() - 1) {
+                                                System.out.println("Module not found!");
                                             }
-                                        }
 
+                                        }
+                                        break;
+                                    } else if (Students.indexOf(Student) == Students.size() - 1) {
+                                        System.out.println("Student not found!");
                                     }
+
                                 }
                             } else {
                                 break;
@@ -220,10 +239,17 @@ public class GradeTracker {
 
                                                     System.out.print("\nDo you want to add more Assessment(y/n): ");
                                                     assess_loop = scan.next();
+
+                                                    break;
+                                                } else if (Student.getModules()
+                                                        .indexOf(Module) == Student.getModules().size() - 1) {
+                                                    System.out.println("Module not found!");
                                                 }
                                             }
                                         } while (assess_loop.equals("y"));
-
+                                        break;
+                                    } else if (Students.indexOf(Student) == Students.size() - 1) {
+                                        System.out.println("Student not found!");
                                     }
 
                                 }
@@ -236,56 +262,78 @@ public class GradeTracker {
                     } else if (sm_option == 2) {
 
                         String del_assess_loop = "y";
+                        String main_del_assess_loop = "y";
+                        while (main_del_assess_loop.equals("y")) {
+                            if (del_assess_loop.equals("y")) {
 
-                        System.out.print("\nEnter student id to remove Assessment; ");
-                        String mod_std_id = scan.next();
+                                System.out.print("\nEnter student id to remove Assessment; ");
+                                String mod_std_id = scan.next();
 
-                        for (Iterator<Student> x = Students.iterator(); x.hasNext();) {
-                            Student Student = x.next();
-                            if (Student.getStudentID().equals((mod_std_id))) {
+                                for (Iterator<Student> x = Students.iterator(); x.hasNext();) {
+                                    Student Student = x.next();
+                                    if (Student.getStudentID().equals((mod_std_id))) {
 
-                                while (true) {
-                                    if (del_assess_loop.equals("y")) {
-
-                                        // prompt data first to choose easily
-                                        System.out.print(Student.getModules());
-
-                                        System.out.print("\nEnter module code to remove Assessment: ");
-                                        String del_module_code = scan.next();
-
-                                        for (Iterator<Module> y = Student.getModules().iterator(); y.hasNext();) {
-                                            Module Module = y.next();
-                                            if (del_module_code.equals(Module.getModuleCode())) {
+                                        while (true) {
+                                            if (del_assess_loop.equals("y")) {
 
                                                 // prompt data first to choose easily
-                                                System.out.print(Module.getAssessments());
+                                                System.out.print(Student.getModules());
 
-                                                System.out.print("\nEnter Assessment name to remove: ");
-                                                String del_assess_name = scan.next();
+                                                System.out.print("\nEnter module code to remove Assessment: ");
+                                                String del_module_code = scan.next();
 
-                                                for (Iterator<Assessment> w = Module.getAssessments().iterator(); w
+                                                for (Iterator<Module> y = Student.getModules().iterator(); y
                                                         .hasNext();) {
-                                                    Assessment Assessment = w.next();
-                                                    if (Assessment.getName().equals(del_assess_name)) {
+                                                    Module Module = y.next();
+                                                    if (del_module_code.equals(Module.getModuleCode())) {
 
-                                                        w.remove();
+                                                        // prompt data first to choose easily
                                                         System.out.print(Module.getAssessments());
 
-                                                        System.out
-                                                                .print("\nDo you want to delete more assessment(y/n): ");
+                                                        System.out.print("\nEnter Assessment name to remove: ");
+                                                        String del_assess_name = scan.next();
 
-                                                        del_assess_loop = scan.next();
+                                                        for (Iterator<Assessment> w = Module.getAssessments()
+                                                                .iterator(); w
+                                                                        .hasNext();) {
+                                                            Assessment Assessment = w.next();
+                                                            if (Assessment.getName().equals(del_assess_name)) {
 
+                                                                w.remove();
+                                                                System.out.print(Module.getAssessments());
+
+                                                                System.out.print(
+                                                                        "\nDo you want to delete more assessment for this Student(y/n): ");
+                                                                del_assess_loop = scan.next();
+                                                                break;
+
+                                                            } else if (Module.getAssessments()
+                                                                    .indexOf(
+                                                                            Assessment) == Module.getAssessments()
+                                                                                    .size()
+                                                                                    - 1) {
+                                                                System.out.println("Assessment not found!");
+                                                            }
+                                                        }
+                                                        break;
+
+                                                    } else if (Student.getModules()
+                                                            .indexOf(Module) == Student.getModules().size() - 1) {
+                                                        System.out.println("Module not found!");
                                                     }
                                                 }
+                                            } else {
 
+                                                break;
                                             }
                                         }
-                                    } else {
-
                                         break;
+                                    } else if (Students.indexOf(Student) == Students.size() - 1) {
+                                        System.out.println("Student not found!");
                                     }
                                 }
+                            } else {
+                                break;
                             }
                         }
 
