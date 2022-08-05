@@ -7,7 +7,7 @@ public class Module {
     private String moduleCode;
     private String description;
     private int creditUnits;
-    private ArrayList<String> assessments = new ArrayList<String>();
+    private ArrayList<Assessment> assessments = new ArrayList<Assessment>();
 
     public Module() {
 
@@ -38,6 +38,10 @@ public class Module {
         return this.creditUnits;
     }
 
+    public ArrayList<Assessment> getAssessments() {
+        return this.assessments;
+    }
+
     // SET
     public void setModuleName(String name) {
         this.name = name;
@@ -53,6 +57,10 @@ public class Module {
 
     public void setCreditUnits(int creditUnits) {
         this.creditUnits = creditUnits;
+    }
+
+    public void setAssessments(Assessment assessments) {
+        this.assessments.add(assessments);
     }
 
     @Override
