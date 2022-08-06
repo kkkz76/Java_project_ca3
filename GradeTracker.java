@@ -6,6 +6,46 @@ import java.util.*;
 public class GradeTracker {
     private static ArrayList<Student> Students = new ArrayList<>();
 
+    // method.......
+    public static double get_GPA(String id) {
+        double gpa = 0;
+        for (Student x : Students) {
+            if (x.getStudentID().equals(id)) {
+                gpa = x.getGPA();
+            }
+        }
+        return gpa;
+    }
+
+    public static double get_overAllMark(String id, String moduleCode) {
+        double overallmark = 0;
+        for (Student x : Students) {
+            if (x.getStudentID().equals(id)) {
+                for (Module y : x.getModules()) {
+                    if (y.getModuleCode().equals(moduleCode)) {
+                        overallmark = y.getOverallMarks();
+                    }
+                }
+            }
+        }
+        return overallmark;
+    }
+
+    public static String get_overAllGrade(String id, String moduleCode) {
+        String overallmark = "";
+        for (Student x : Students) {
+            if (x.getStudentID().equals(id)) {
+                for (Module y : x.getModules()) {
+                    if (y.getModuleCode().equals(moduleCode)) {
+                        overallmark = y.getOverallGrade();
+                    }
+                }
+            }
+        }
+        return overallmark;
+    }
+
+    // main..............
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
@@ -28,6 +68,7 @@ public class GradeTracker {
                             "\n1:Create new students\n2:Delete new students\n3:Calculate GPA\n0:Go Main Menu\nEnter Option: ");
                     int sm_option = scan.nextInt();
                     // create new students............
+
                     if (sm_option == 1) {
                         Student std = new Student();
                         // name...............
@@ -65,14 +106,20 @@ public class GradeTracker {
                                 } else if (Students.indexOf(Student) == Students.size() - 1) {
                                     System.out.println("Student not found!");
                                 }
-
                             }
-
                         }
                     }
                     // GPA....................
                     else if (sm_option == 3) {
-                        System.out.println("mango");
+                        String x = "y";
+                        while (x.equals("y")) {
+                            System.out.println("Enter student id: ");
+                            String id = scan.next();
+                            System.out.println(get_GPA(id));
+                            System.out.println("Do you want to find another student's GPA?(y/n): ");
+                            x = scan.next();
+                        }
+
                     } else if (sm_option == 0) {
                         break;
                     } else {
@@ -82,6 +129,7 @@ public class GradeTracker {
                 }
 
             }
+
             // Modules........................
 
             else if (main_option == 2) {
@@ -115,6 +163,11 @@ public class GradeTracker {
                                             System.out.print("add module description: ");
                                             String module_description = scan.next();
                                             std_module.setDescription(module_description);
+
+                                            System.out.print("add creditUnits: ");
+                                            int creditUnits = scan.nextInt();
+                                            std_module.setCreditUnits(creditUnits);
+
                                             Student.setModules(std_module);
                                             System.out.print(Student);
                                             System.out.print(Student.getModules());
@@ -181,10 +234,35 @@ public class GradeTracker {
                             }
                         }
 
-                    } else if (sm_option == 3) {
-                        System.out.println("mango");
-                    } else if (sm_option == 4) {
-                        System.out.println("pineapple");
+                    }
+
+                    // OverallMarks.....................
+                    else if (sm_option == 3) {
+                        String x = "y";
+                        while (x.equals("y")) {
+                            System.out.println("Enter student id");
+                            String id = scan.next();
+                            System.out.println("Enter module code");
+                            String module_code = scan.next();
+                            System.out.println(get_overAllMark(id, module_code));
+                            System.out.println("Do you want to find another student's Marks?(y/n): ");
+                            x = scan.next();
+                        }
+
+                    }
+                    // OverallGrade.....................
+
+                    else if (sm_option == 4) {
+                        String x = "y";
+                        while (x.equals("y")) {
+                            System.out.println("Enter student id");
+                            String id = scan.next();
+                            System.out.println("Enter module code");
+                            String module_code = scan.next();
+                            System.out.println(get_overAllGrade(id, module_code));
+                            System.out.println("Do you want to find another student's Grade?(y/n): ");
+                            x = scan.next();
+                        }
                     } else if (sm_option == 0) {
                         break;
                     } else {
@@ -195,6 +273,7 @@ public class GradeTracker {
             }
 
             // Assessment.....................
+
             else if (main_option == 3) {
 
                 while (true) {
@@ -222,8 +301,8 @@ public class GradeTracker {
                                             System.out.print("\nEnter Module id to add assessment: ");
                                             String assess_module_id = scan.next();
                                             for (Iterator<Module> v = Student.getModules().iterator(); v.hasNext();) {
-                                                Module Module = v.next();
-                                                if (Module.getModuleCode().equals(assess_module_id)) {
+                                                Module module = v.next();
+                                                if (module.getModuleCode().equals(assess_module_id)) {
 
                                                     Assessment std_assess = new Assessment();
                                                     System.out.print("\nadd Assessment name: ");
@@ -233,16 +312,37 @@ public class GradeTracker {
                                                     System.out.print("add Assessment Description: ");
                                                     String assess_descript = scan.next();
                                                     std_assess.setDescription(assess_descript);
-                                                    Module.setAssessments(std_assess);
-                                                    System.out.print(Module);
-                                                    System.out.print(Module.getAssessments());
+
+                                                    System.out.print("add Assessment marks: ");
+                                                    double assess_marks = scan.nextDouble();
+                                                    std_assess.setMarks(assess_marks);
+                                                    module.setAssessments(std_assess);
+
+                                                    System.out.print("add Assessment total possible mark: ");
+                                                    double assessess_totalMark = scan.nextDouble();
+                                                    std_assess.setTotalMarks(assessess_totalMark);
+
+                                                    System.out.print("add Assessment weightage: ");
+                                                    double assess_weightage = scan.nextDouble();
+                                                    std_assess.setWeightage(assess_weightage);
+
+                                                    System.out.println(module);
+                                                    System.out.println(module.getAssessments());
+                                                    System.out.println(std_assess.getWeightedMarks());
+                                                    System.out.println(module.getOverallMarks());
+                                                    System.out.println(module.getOverallTotalMarks());
+                                                    System.out.println(module.getOverallGrade());
+                                                    Module.getGradePoints(module.getOverallGrade());
+                                                    System.out.println(module.getWeightedGradePoints());
+                                                    System.out.println(Student.getTotalCreditUnits());
+                                                    System.out.println(Student.getGPA());
 
                                                     System.out.print("\nDo you want to add more Assessment(y/n): ");
                                                     assess_loop = scan.next();
 
                                                     break;
                                                 } else if (Student.getModules()
-                                                        .indexOf(Module) == Student.getModules().size() - 1) {
+                                                        .indexOf(module) == Student.getModules().size() - 1) {
                                                     System.out.println("Module not found!");
                                                 }
                                             }
@@ -344,7 +444,9 @@ public class GradeTracker {
                     }
                 }
 
-            } else if (main_option == 4) {
+            }
+
+            else if (main_option == 4) {
                 System.out.println("\nProgram is terminated");
                 System.exit(0);
             }
@@ -355,5 +457,7 @@ public class GradeTracker {
             }
 
         }
+
     }
+
 }

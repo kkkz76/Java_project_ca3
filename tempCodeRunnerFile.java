@@ -1,1 +1,0 @@
-  if (del_assess_loop.equals("y")) {
