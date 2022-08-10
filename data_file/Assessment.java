@@ -1,6 +1,4 @@
-package apple;
-
-import java.util.*;
+package data_file;
 
 public class Assessment {
     private String name;
@@ -66,7 +64,7 @@ public class Assessment {
         this.weightage = weightage;
     }
 
-    public double getWeightedMarks() {
+    public double getWeightageMarks() {
         return this.marks * this.weightage / this.totalMarks;
     }
 

@@ -1,10 +1,11 @@
-package apple;
+package data_file;
 
 import java.util.*;
 
 public class Student {
     private String name;
     private String studentID;
+
     private ArrayList<Module> modules = new ArrayList<Module>();
 
     public Student() {
@@ -53,6 +54,7 @@ public class Student {
         while (a.hasNext()) {
             Module module_creditUnit = a.next();
             totalCreditUnit += module_creditUnit.getCreditUnits();
+            // System.out.println(totalCreditUnit);
         }
         return totalCreditUnit;
     }
@@ -63,7 +65,8 @@ public class Student {
         while (a.hasNext()) {
             Module module_GPA = a.next();
             WGP += module_GPA.getWeightedGradePoints();
-
+            // System.out.println(WGP);
+            // System.out.println(this.getTotalCreditUnits());
         }
         return WGP / this.getTotalCreditUnits();
     }

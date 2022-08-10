@@ -1,4 +1,4 @@
-package apple;
+package data_file;
 
 import java.util.*;
 
@@ -6,8 +6,10 @@ public class Module {
     private String name;
     private String moduleCode;
     private String description;
-    private int creditUnits;
-    private static double gradePoint;
+    private int creditUnits = 0;
+    // private static double gradePoint;
+    private String overallGrade = "Failure";
+
     private ArrayList<Assessment> assessments = new ArrayList<Assessment>();
 
     public Module() {
@@ -20,6 +22,24 @@ public class Module {
         this.description = description;
         this.creditUnits = creditUnits;
 
+    }
+
+    enum Grade {
+        APlus("A+"),
+        A("A"),
+        BPlus("B+"),
+        B("B"),
+        CPlus("C+"),
+        C("C"),
+        DPlus("D+"),
+        D("D"),
+        F("Failure");
+
+        private final String gradeValue;
+
+        private Grade(String gradeValue) {
+            this.gradeValue = gradeValue;
+        }
     }
 
     // GET
@@ -70,7 +90,7 @@ public class Module {
         double overallMarks = 0;
         while (a.hasNext()) {
             Assessment assessment = a.next();
-            overallMarks += assessment.getWeightedMarks();
+            overallMarks += assessment.getWeightageMarks();
         }
 
         return overallMarks;
@@ -91,43 +111,41 @@ public class Module {
     public String getOverallGrade() {
         Iterator<Assessment> a = assessments.iterator();
         double grade_mark = 0;
-        String overallGrade = "";
+
         while (a.hasNext()) {
             Assessment assessment = a.next();
-            grade_mark += assessment.getWeightedMarks();
+            grade_mark += assessment.getWeightageMarks();
         }
         switch ((int) grade_mark / 10) {
             case 10:
-                overallGrade = "A+";
+                this.overallGrade = Grade.APlus.gradeValue;
                 break;
             case 9:
-                overallGrade = "A";
+                this.overallGrade = Grade.A.gradeValue;
                 break;
             case 8:
-                overallGrade = "B+";
+                this.overallGrade = Grade.BPlus.gradeValue;
                 break;
             case 7:
-                overallGrade = "B";
+                this.overallGrade = Grade.B.gradeValue;
                 break;
             case 6:
-                overallGrade = "C+";
+                this.overallGrade = Grade.CPlus.gradeValue;
                 break;
             case 5:
-                overallGrade = "C";
+                this.overallGrade = Grade.C.gradeValue;
                 break;
-            case 4:
-            case 3:
-            case 2:
-            case 1:
-            case 0:
-                overallGrade = "Failure";
+
+            default:
+                this.overallGrade = Grade.F.gradeValue;
                 break;
         }
+        getGradePoints(this.overallGrade);
         return overallGrade;
     }
 
-    public static void getGradePoints(String grade) {
-
+    public static double getGradePoints(String grade) {
+        double gradePoint = 0;
         switch (grade) {
             case "A+":
                 gradePoint = 4;
@@ -150,14 +168,17 @@ public class Module {
             case "Failure":
                 gradePoint = 0;
                 break;
+            default:
+                gradePoint = 0;
+                break;
         }
-        System.out.println(gradePoint);
+        return gradePoint;
 
     }
 
     public double getWeightedGradePoints() {
 
-        return this.creditUnits * gradePoint;
+        return this.creditUnits * getGradePoints(this.overallGrade);
     }
 
     @Override
